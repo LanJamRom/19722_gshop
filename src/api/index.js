@@ -4,7 +4,7 @@
  */
 import ajax from './ajax'
 // const BASE_URL = 'http://localhost:4000'
-// const BASE_URL = '/api'
+const BASE_URL = '/api'
 
 // 1、根据经纬度获取位置详情
 export const reqAddress = (geohash) => ajax(`/position/${geohash}`)
@@ -24,4 +24,9 @@ export const reqSmsLogin = (phone, code) => ajax('/login_sms', {phone, code}, 'P
 export const reqUserInfo = () => ajax('/userinfo')
 // 10、用户登出
 export const reqLogout = () => ajax('/logout')
-
+// 11、获取商家信息
+export const reqShopInfo = () => ajax('http://localhost:8080/info')
+// 12、获取商家评价数组
+export const reqShopRatings = () => ajax('http://localhost:8080/ratings')
+// 13、获取商家商品数组
+export const reqShopGoods = () => ajax('http://localhost:8080/goods')
