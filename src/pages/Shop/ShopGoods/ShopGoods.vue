@@ -117,9 +117,8 @@
         //1、初始化tops
         const tops = []
         let top = 0
-        tops.push(top)
         //2、收集
-
+        tops.push(top)
         //3、找到所有分类的li，并遍历
         const lis = this.$refs.foodsUl.children
         Array.from(lis).forEach(li => {

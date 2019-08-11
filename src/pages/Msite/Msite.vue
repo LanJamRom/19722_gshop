@@ -73,8 +73,9 @@
           if(minArr.length === 8) {
             minArr = []
           }
-          //如果minArr是空的，将小数组保存到大数组中
+          //如果是空的，将小数组保存到大数组中
           if(minArr.length === 0) {
+            console.log(minArr)
             arr.push(minArr)
           }
           //将当前分类保存到小数组中

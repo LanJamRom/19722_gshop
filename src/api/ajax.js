@@ -14,10 +14,14 @@ export default function ajax (url, data= {}, type= 'GET') {
       Object.keys(data).forEach(key => {
         dataStr += key + '=' + data[key] + '&'
       })
+      //使每一个参数最后面都增加了一个'&'
+      //下面进行处理最后的'&'
       if (dataStr !== '') {
         dataStr = dataStr.substring(0, dataStr.lastIndexOf('&'))
         url = url + '?' + dataStr
       }
+      //substring用于提取指定下标中间的字符,这样就将所有参数规格化提取成url
+
       // 发送get请求
       promise = axios.get(url)
     } else {
