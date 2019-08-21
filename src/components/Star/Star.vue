@@ -5,32 +5,32 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      score: Number,
-      size: Number
-    },
-    computed: {
-      starArr() {
-        const {score} = this
-        const arr= []
-        //向arr中添加n个'on'
-        const scoreInteger = Math.floor(score)
-        for(let i=0; i<scoreInteger; i++) {
-          arr.push('on')
-        }
-        // 0/1个'half'
-        if(score*10-scoreInteger*10 >= 5) {
-          arr.push('half')
-        }
-        //n个'off'
-        while(arr.length < 5) {
-          arr.push('off')
-        }
-        return arr
+export default {
+  props: {
+    score: Number,
+    size: Number
+  },
+  computed: {
+    starArr () {
+      const {score} = this
+      const arr = []
+      // 向arr中添加n个'on'
+      const scoreInteger = Math.floor(score)
+      for (let i = 0; i < scoreInteger; i++) {
+        arr.push('on')
       }
+      // 0/1个'half'
+      if (score * 10 - scoreInteger * 10 >= 5) {
+        arr.push('half')
+      }
+      // n个'off'
+      while (arr.length < 5) {
+        arr.push('off')
+      }
+      return arr
     }
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

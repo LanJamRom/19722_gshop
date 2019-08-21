@@ -58,139 +58,136 @@
 </template>
 
 <script>
-  let Timer = null
-  import AlerTip from '../../components/AlertTip/AlertTip'
-  import {reqSendCode, reqPwdLogin, reqSmsLogin} from '../../api'
-  export default {
-    data() {
-      return {
-        logintype: true, //true代表短信登录，false代表密码登录
-        phone: '', //手机号
-        computedTime: 0, //计时的时间
-        showPwd: false, //是否显示密码
-        code: '', //短信验证码
-        name: '', //用户名
-        pwd: '', //密码
-        captcha: '', //图形验证码
-        alertText: '' ,//提示文本
-        alertShow: false //是否显示提示框
-      }
-    },
-    methods: {
-      //异步获取短信验证码
-      async getCode() {
-        //如果当前没有计时
-        if(Timer === null) {
-          //启动倒计时
-          this.computedTime = 30
-          clearInterval(Timer)
-          Timer = setInterval(() => {
-            this.computedTime--
-            if(this.computedTime === 0) {
-              //停止定时
-              clearInterval(Timer)
-              Timer = null
-            }
-          },1000)
-          //发送ajax请求(向指定手机号发送验证码)
-          const result = await reqSendCode(this.phone)
-          if(result.code === 1) {//失败了
-            //显示提示
-            this.showalert(result.msg)
-            //停止计时
-            if(Timer != null) {
-              this.computedTime = 0
-              clearInterval(Timer)
-              Timer = null
-            }
-          }
-        }
-      },
-
-      //弹窗提示
-      showalert(alertText) {
-        this.alertShow = true
-        this.alertText = alertText
-      },
-
-      //实现异步登录
-      async login() {
-        let result
-        //前台表单验证
-        if(this.logintype) {//短信登录
-          const {legalPhone, phone, code} = this
-          if(!legalPhone) {
-            //手机号不正确
-            this.showalert('手机号错误!')
-            return
-          }else if(!/^\d{6}/.test(code)) {
-            //验证码必须是六位数字
-            this.showalert('验证码错误!')
-            return
-          }
-          // 发送ajax，请求短信登录
-          result = await reqSmsLogin(phone, code)
-
-        }else {//密码登录
-          const {name, pwd, captcha} = this
-          if(!name) {
-            //用户名必须指定
-            this.showalert('用户名必须指定!')
-            return
-          }else if(!pwd || !captcha) {
-            //密码必须制定
-            this.showalert('密码或者验证码不正确!')
-            return
-          }
-          // 发送ajax，请求密码登录
-          result = await reqPwdLogin({name, pwd, captcha})
-
-        }
-
-        //无论成功失败，都应该停止计时器
-        if(Timer != null) {
-          this.computedTime = 0
-          clearInterval(Timer)
-          Timer = null
-        }
-
-        // 根据结果数据处理
-        if(result.code === 0) {
-          const user = result.data
-          //将user保存到vuex的state中，并跳转路由去个人中心界面
-          this.$store.dispatch('recorUser', user)
-          this.$router.replace('/profile')
-        }else {
-          // 失败显示新的图片验证码
-          this.getCaptcha()
-          // 提示失败信息
-          const msg = result.msg
-          this.showalert(msg)
-        }
-      },
-
-      //关闭提示框
-      closeTip() {
-        this.alertShow = false
-        this.alertText = ''
-      },
-
-      //获取图形验证码
-      getCaptcha() {
-        //每次都更新src值，是请求每次都发送
-        this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
-
-      }
-    },
-    computed: {
-      legalPhone() {
-        return /^1\d{10}$/.test(this.phone)
-      }
-    },
-    components: {
-      AlerTip
+import AlerTip from '../../components/AlertTip/AlertTip'
+import {reqSendCode, reqPwdLogin, reqSmsLogin} from '../../api'
+let Timer = null
+export default {
+  data () {
+    return {
+      logintype: true, // true代表短信登录，false代表密码登录
+      phone: '', // 手机号
+      computedTime: 0, // 计时的时间
+      showPwd: false, // 是否显示密码
+      code: '', // 短信验证码
+      name: '', // 用户名
+      pwd: '', // 密码
+      captcha: '', // 图形验证码
+      alertText: '', // 提示文本
+      alertShow: false // 是否显示提示框
     }
+  },
+  methods: {
+    // 异步获取短信验证码
+    async getCode () {
+      // 如果当前没有计时
+      if (Timer === null) {
+        // 启动倒计时
+        this.computedTime = 30
+        clearInterval(Timer)
+        Timer = setInterval(() => {
+          this.computedTime--
+          if (this.computedTime === 0) {
+            // 停止定时
+            clearInterval(Timer)
+            Timer = null
+          }
+        }, 1000)
+        // 发送ajax请求(向指定手机号发送验证码)
+        const result = await reqSendCode(this.phone)
+        if (result.code === 1) { // 失败了
+          // 显示提示
+          this.showalert(result.msg)
+          // 停止计时
+          if (Timer != null) {
+            this.computedTime = 0
+            clearInterval(Timer)
+            Timer = null
+          }
+        }
+      }
+    },
+
+    // 弹窗提示
+    showalert (alertText) {
+      this.alertShow = true
+      this.alertText = alertText
+    },
+
+    // 实现异步登录
+    async login () {
+      let result
+      // 前台表单验证
+      if (this.logintype) { // 短信登录
+        const {legalPhone, phone, code} = this
+        if (!legalPhone) {
+          // 手机号不正确
+          this.showalert('手机号错误!')
+          return
+        } else if (!/^\d{6}/.test(code)) {
+          // 验证码必须是六位数字
+          this.showalert('验证码错误!')
+          return
+        }
+        // 发送ajax，请求短信登录
+        result = await reqSmsLogin(phone, code)
+      } else { // 密码登录
+        const {name, pwd, captcha} = this
+        if (!name) {
+          // 用户名必须指定
+          this.showalert('用户名必须指定!')
+          return
+        } else if (!pwd || !captcha) {
+          // 密码必须制定
+          this.showalert('密码或者验证码不正确!')
+          return
+        }
+        // 发送ajax，请求密码登录
+        result = await reqPwdLogin({name, pwd, captcha})
+      }
+
+      // 无论成功失败，都应该停止计时器
+      if (Timer != null) {
+        this.computedTime = 0
+        clearInterval(Timer)
+        Timer = null
+      }
+
+      // 根据结果数据处理
+      if (result.code === 0) {
+        const user = result.data
+        // 将user保存到vuex的state中，并跳转路由去个人中心界面
+        this.$store.dispatch('recorUser', user)
+        this.$router.replace('/profile')
+      } else {
+        // 失败显示新的图片验证码
+        this.getCaptcha()
+        // 提示失败信息
+        const msg = result.msg
+        this.showalert(msg)
+      }
+    },
+
+    // 关闭提示框
+    closeTip () {
+      this.alertShow = false
+      this.alertText = ''
+    },
+
+    // 获取图形验证码
+    getCaptcha () {
+      // 每次都更新src值，是请求每次都发送
+      this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
+    }
+  },
+  computed: {
+    legalPhone () {
+      return /^1\d{10}$/.test(this.phone)
+    }
+  },
+  components: {
+    AlerTip
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

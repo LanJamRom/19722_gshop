@@ -133,27 +133,27 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  export default {
-    data() {
-      return {
-        supportClasses: ['activity-green','activity-red','activity-orange'],
-        shopShow: false,
-        supporShow: false
-      }
+import {mapState} from 'vuex'
+export default {
+  data () {
+    return {
+      supportClasses: ['activity-green', 'activity-red', 'activity-orange'],
+      shopShow: false,
+      supporShow: false
+    }
+  },
+  methods: {
+    toggleShowShow () {
+      this.shopShow = !this.shopShow
     },
-    methods: {
-      toggleShowShow() {
-        this.shopShow = !this.shopShow
-      },
-      toggleSupportShow() {
-        this.supporShow = !this.supporShow
-      }
-    },
-    computed: {
-      ...mapState(['info'])
-    },
+    toggleSupportShow () {
+      this.supporShow = !this.supporShow
+    }
+  },
+  computed: {
+    ...mapState(['info'])
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

@@ -10,12 +10,12 @@
 
 <script>
 
-  export default {
-    props: {
-      title: String
-    },
-
+export default {
+  props: {
+    title: String
   }
+
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

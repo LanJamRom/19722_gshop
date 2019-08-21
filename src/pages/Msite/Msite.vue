@@ -44,66 +44,66 @@
 </template>
 
 <script>
-  import Swiper from 'swiper'
-  import 'swiper/dist/css/swiper.min.css'
-  import HeaderTop from '../../components/HeaderTop/HeaderTop'
-  import ShopList from '../../components/ShopList/ShopList'
-  import {mapState} from 'vuex'
-  export default {
-    data() {
-      return {
-        baseImageUrl: 'http://fuss10.elemecdn.com'
-      }
-    },
-    mounted() {
-      this.$store.dispatch('getcategorys')
-      this.$store.dispatch('getShops')
-    },
-    computed: {
-      ...mapState(['address','categorys','userInfo']),
-      //根据categorys一维数组生成一个二维数组，小数组个数最大为8
-      categorysArr() {
-        const {categorys} = this
-        //准备空的二维数组
-        const arr = []
-        let minArr = []
-        //遍历categorys
-        categorys.forEach(c =>{
-          //如果当前小数组满了，创建一个新的
-          if(minArr.length === 8) {
-            minArr = []
+import Swiper from 'swiper'
+import 'swiper/dist/css/swiper.min.css'
+import HeaderTop from '../../components/HeaderTop/HeaderTop'
+import ShopList from '../../components/ShopList/ShopList'
+import {mapState} from 'vuex'
+export default {
+  data () {
+    return {
+      baseImageUrl: 'http://fuss10.elemecdn.com'
+    }
+  },
+  mounted () {
+    this.$store.dispatch('getcategorys')
+    this.$store.dispatch('getShops')
+  },
+  computed: {
+    ...mapState(['address', 'categorys', 'userInfo']),
+    // 根据categorys一维数组生成一个二维数组，小数组个数最大为8
+    categorysArr () {
+      const {categorys} = this
+      // 准备空的二维数组
+      const arr = []
+      let minArr = []
+      // 遍历categorys
+      categorys.forEach(c => {
+        // 如果当前小数组满了，创建一个新的
+        if (minArr.length === 8) {
+          minArr = []
+        }
+        // 如果是空的，将小数组保存到大数组中
+        if (minArr.length === 0) {
+          console.log(minArr)
+          arr.push(minArr)
+        }
+        // 将当前分类保存到小数组中
+        minArr.push(c)
+      })
+      return arr
+    }
+  },
+  components: {
+    HeaderTop,
+    ShopList
+  },
+  watch: {
+    categorys (value) {
+      // 界面更新就立即创建swiper对象，此条语句要在数据更新之后
+      this.$nextTick(() => {
+        // 创建Swiprer实例对象，来实现轮播
+        new Swiper('.swiper-container', {
+          loop: true, // 循环轮播
+          // 分页器
+          pagination: {
+            el: '.swiper-pagination'
           }
-          //如果是空的，将小数组保存到大数组中
-          if(minArr.length === 0) {
-            console.log(minArr)
-            arr.push(minArr)
-          }
-          //将当前分类保存到小数组中
-          minArr.push(c)
         })
-        return arr
-      }
-    },
-    components: {
-      HeaderTop,
-      ShopList
-    },
-    watch: {
-      categorys(value) {
-        //界面更新就立即创建swiper对象，此条语句要在数据更新之后
-        this.$nextTick(() =>{
-          //创建Swiprer实例对象，来实现轮播
-          new Swiper('.swiper-container', {
-            loop: true, // 循环轮播
-            // 分页器
-            pagination: {
-              el: '.swiper-pagination',
-            },
-          })
-        })
-      }
+      })
     }
   }
+}
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus" type="text/stylus">

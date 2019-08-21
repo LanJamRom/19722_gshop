@@ -69,51 +69,51 @@
 </template>
 
 <script>
-  import BSroll from '@better-scroll/core'
-  import Star from '../../../components/Star/Star'
-  import {mapState,mapGetters} from 'vuex'
-  export default {
-    data() {
-      return {
-        onlyShowText: true, //是否只显示有文本内容的
-        selectType: 2 //选择评价类型:0-满意，1-不满意，2-全部
-      }
-    },
-    mounted() {
-      this.$store.dispatch('getShopRatings',() => {
-        this.$nextTick(() => {
-          new BSroll(this.$refs.ratings, {
-            click: true
-          })
+import BSroll from '@better-scroll/core'
+import Star from '../../../components/Star/Star'
+import {mapState, mapGetters} from 'vuex'
+export default {
+  data () {
+    return {
+      onlyShowText: true, // 是否只显示有文本内容的
+      selectType: 2 // 选择评价类型:0-满意，1-不满意，2-全部
+    }
+  },
+  mounted () {
+    this.$store.dispatch('getShopRatings', () => {
+      this.$nextTick(() => {
+        new BSroll(this.$refs.ratings, {
+          click: true
         })
       })
+    })
+  },
+  methods: {
+    setSelectType (type) {
+      this.selectType = type
     },
-    methods: {
-      setSelectType(type) {
-        this.selectType = type
-      },
-      toggleShowText() {
-        this.onlyShowText = !this.onlyShowText
-      }
-    },
-    computed: {
-      ...mapState(['info', 'ratings']),
-      ...mapGetters(['positiveSize']),
-      filterRatings() {
-        //得到相关的数据
-        const {ratings, onlyShowText, selectType} = this
-        //产生一个过滤后的新数组
-        return ratings.filter(rating => {
-        //选择的类型和是否显示有内容
-          const {rateType, text} = rating
-          return ((selectType===2 || selectType===rateType) && (!onlyShowText || text.length>0))
-        })
-      }
-    },
-    components: {
-      Star
-    },
+    toggleShowText () {
+      this.onlyShowText = !this.onlyShowText
+    }
+  },
+  computed: {
+    ...mapState(['info', 'ratings']),
+    ...mapGetters(['positiveSize']),
+    filterRatings () {
+      // 得到相关的数据
+      const {ratings, onlyShowText, selectType} = this
+      // 产生一个过滤后的新数组
+      return ratings.filter(rating => {
+        // 选择的类型和是否显示有内容
+        const {rateType, text} = rating
+        return ((selectType === 2 || selectType === rateType) && (!onlyShowText || text.length > 0))
+      })
+    }
+  },
+  components: {
+    Star
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

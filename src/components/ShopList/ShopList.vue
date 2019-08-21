@@ -42,7 +42,7 @@
       </li>
     </ul>
     <ul v-else>
-      <li v-for="item in 6">
+      <li v-for="item in 6" :key="item">
         <img src="./images/shop_back.svg" alt="back">
       </li>
     </ul>
@@ -50,21 +50,21 @@
 </template>
 
 <script>
-  import Star from '../Star/Star'
-  import {mapState} from 'vuex'
-  export default {
-    data() {
-      return {
-        baseImgUrl: 'https://source.unsplash.com/random/200x200'
-      }
-    },
-    computed: {
-      ...mapState(['shops'])
-    },
-    components: {
-      Star
+import Star from '../Star/Star'
+import {mapState} from 'vuex'
+export default {
+  data () {
+    return {
+      baseImgUrl: 'https://source.unsplash.com/random/200x200'
     }
+  },
+  computed: {
+    ...mapState(['shops'])
+  },
+  components: {
+    Star
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

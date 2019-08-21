@@ -9,17 +9,17 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      food: Object
-    },
+export default {
+  props: {
+    food: Object
+  },
 
-    methods: {
-      updateCount(isAdd) {
-        this.$store.dispatch('updateCount', {isAdd, food: this.food})
-      }
+  methods: {
+    updateCount (isAdd) {
+      this.$store.dispatch('updateCount', {isAdd, food: this.food})
     }
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

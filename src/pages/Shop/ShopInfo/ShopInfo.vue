@@ -49,49 +49,49 @@
 </template>
 
 <script>
-  import BScroll from '@better-scroll/core'
-  import {mapState} from 'vuex'
-  export default {
-    data() {
-      return {
-        supportClasses: ['activity-green','activity-red','activity-orange'],
-      }
-    },
-    computed: {
-      ...mapState(['info'])
-    },
-    mounted() {
-      //如果数据还没有直接结束
-      if(!this.info.pics) {
-        return
-      }
-      //数据有了，可以创建BScroll滑动对象
-      this._initScroll()
-    },
-    methods: {
-      _initScroll() {
-        new BScroll('.shop-info');
+import BScroll from '@better-scroll/core'
+import {mapState} from 'vuex'
+export default {
+  data () {
+    return {
+      supportClasses: ['activity-green', 'activity-red', 'activity-orange']
+    }
+  },
+  computed: {
+    ...mapState(['info'])
+  },
+  mounted () {
+    // 如果数据还没有直接结束
+    if (!this.info.pics) {
+      return
+    }
+    // 数据有了，可以创建BScroll滑动对象
+    this._initScroll()
+  },
+  methods: {
+    _initScroll () {
+      new BScroll('.shop-info')
 
-        const ul = this.$refs.picsUl
-        const liWidth = 120
-        const space = 6
-        const count = this.info.pics.length
-        console.log(count);
-        ul.style.width = (liWidth + space) * count - space + 'px'
+      const ul = this.$refs.picsUl
+      const liWidth = 120
+      const space = 6
+      const count = this.info.pics.length
+      console.log(count)
+      ul.style.width = (liWidth + space) * count - space + 'px'
 
-        new BScroll('.pic-wrapper', {
-          scrollX: true
-        })
-      }
-    },
-    watch: {
-      info() { //刷新流程 --> 更新数据
-        this.$nextTick(() => {
-          this._initScroll()
-        })
-      }
+      new BScroll('.pic-wrapper', {
+        scrollX: true
+      })
+    }
+  },
+  watch: {
+    info () { // 刷新流程 --> 更新数据
+      this.$nextTick(() => {
+        this._initScroll()
+      })
     }
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">
@@ -225,7 +225,6 @@
 
           &:last-child
             border-none()
-
 
     .split
       width: 100%

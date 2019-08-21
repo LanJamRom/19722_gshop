@@ -49,102 +49,102 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import BScroll from '@better-scroll/core'
-  import CartControl from '../../../components/CartControl/CartControl'
-  import Food from '../../../components/Food/Food'
-  import ShopCart from '../../../components/ShopCart/ShopCart'
+import {mapState} from 'vuex'
+import BScroll from '@better-scroll/core'
+import CartControl from '../../../components/CartControl/CartControl'
+import Food from '../../../components/Food/Food'
+import ShopCart from '../../../components/ShopCart/ShopCart'
 
-  export default {
-    data() {
-      return {
-        scrollY: 0, //右侧滑动的y轴坐标(滑动过程实时变化)
-        tops: [], //所有右侧分类li的top组成的数组(列表第一次显示后就不再变化)
-        food: {}
-      }
-    },
-    components: {
-      CartControl,
-      Food,
-      ShopCart
-    },
-    mounted() {
-      this.$store.dispatch('getShopGoods', () => {//数据更新后执行
-        this.$nextTick(() => {
-          this._initScroll()
-          this._initTops()
-        })
+export default {
+  data () {
+    return {
+      scrollY: 0, // 右侧滑动的y轴坐标(滑动过程实时变化)
+      tops: [], // 所有右侧分类li的top组成的数组(列表第一次显示后就不再变化)
+      food: {}
+    }
+  },
+  components: {
+    CartControl,
+    Food,
+    ShopCart
+  },
+  mounted () {
+    this.$store.dispatch('getShopGoods', () => { // 数据更新后执行
+      this.$nextTick(() => {
+        this._initScroll()
+        this._initTops()
+      })
+    })
+  },
+  computed: {
+    ...mapState(['goods']),
+
+    // 计算得到当前分类的下标
+    currentIndex () {
+      // 得到条件数据
+      const {scrollY, tops} = this
+      // 根据条件计算产生一个结果
+      const index = tops.findIndex((top, index) => {
+        return scrollY >= top && scrollY < tops[index + 1]
+      })
+      // 返回结果
+      return index
+    }
+  },
+  methods: {
+    // 初始化滚动
+    _initScroll () {
+      // 列表显示之后创建
+      new BScroll('.menu-wrapper', {
+        click: true
+      })
+      this.foodsScroll = new BScroll('.foods-wrapper', {
+        probeType: 2, // 惯性滑动不会触发
+        click: true
+      })
+
+      // 给右侧列表绑定scroll监听
+      this.foodsScroll.on('scroll', ({x, y}) => {
+        this.scrollY = Math.abs(y)
+      })
+      // 给右侧列表绑定scroll结束的监听
+      this.foodsScroll.on('scrollEnd', ({x, y}) => {
+        this.scrollY = Math.abs(y)
       })
     },
-    computed: {
-      ...mapState(['goods']),
-
-      //计算得到当前分类的下标
-      currentIndex() {
-        //得到条件数据
-        const {scrollY, tops} = this
-        //根据条件计算产生一个结果
-        const index = tops.findIndex((top, index) => {
-          return scrollY>=top && scrollY<tops[index+1]
-        })
-        //返回结果
-        return index
-      }
-    },
-    methods: {
-      //初始化滚动
-      _initScroll() {
-        //列表显示之后创建
-        new BScroll('.menu-wrapper', {
-          click: true
-        })
-        this.foodsScroll = new BScroll('.foods-wrapper', {
-          probeType: 2,  //惯性滑动不会触发
-          click: true
-        })
-
-        //给右侧列表绑定scroll监听
-        this.foodsScroll.on('scroll', ({x, y}) => {
-          this.scrollY = Math.abs(y)
-        })
-        //给右侧列表绑定scroll结束的监听
-        this.foodsScroll.on('scrollEnd', ({x,y}) => {
-          this.scrollY = Math.abs(y)
-        })
-      },
-      //初始化tops
-      _initTops() {
-        //1、初始化tops
-        const tops = []
-        let top = 0
-        //2、收集
+    // 初始化tops
+    _initTops () {
+      // 1、初始化tops
+      const tops = []
+      let top = 0
+      // 2、收集
+      tops.push(top)
+      // 3、找到所有分类的li，并遍历
+      const lis = this.$refs.foodsUl.children
+      Array.from(lis).forEach(li => {
+        top += li.clientHeight
         tops.push(top)
-        //3、找到所有分类的li，并遍历
-        const lis = this.$refs.foodsUl.children
-        Array.from(lis).forEach(li => {
-          top += li.clientHeight
-          tops.push(top)
-        })
-        //4、更新数据
-        this.tops = tops
-      },
-
-      clickMeuiItem(index) {
-        const scrollY = this.tops[index]
-        this.scrollY = scrollY
-        this.foodsScroll.scrollTo(0, -scrollY, 300)
-      },
-
-      //显示点击的food
-      showFood(food) {
-        //设置food
-        this.food = food
-        //显示food组件(父组件调用子组件对象的方法)
-        this.$refs.food.toggleShow()
-      }
+      })
+      // 4、更新数据
+      this.tops = tops
     },
 
+    clickMeuiItem (index) {
+      const scrollY = this.tops[index]
+      this.scrollY = scrollY
+      this.foodsScroll.scrollTo(0, -scrollY, 300)
+    },
+
+    // 显示点击的food
+    showFood (food) {
+      // 设置food
+      this.food = food
+      // 显示food组件(父组件调用子组件对象的方法)
+      this.$refs.food.toggleShow()
+    }
   }
+
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

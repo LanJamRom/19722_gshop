@@ -31,47 +31,47 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex'
-  import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
-  export default {
+import {mapState} from 'vuex'
+import HeaderTop from '../../components/HeaderTop/HeaderTop.vue'
+export default {
 
-    data () {
-      return {
-        keyword: '',
-        imgBaseUrl: 'http://cangdu.org:8001/img/',
-        noSearchShops: false
-      }
-    },
-
-    computed: {
-      ...mapState(['searchShops'])
-    },
-
-    methods: {
-      search () {
-        // 得到搜索关键字
-        const keyword = this.keyword.trim()
-        // 进行搜索
-        if(keyword) {
-          this.$store.dispatch('searchShops', keyword)
-        }
-      }
-    },
-
-    watch: {
-      searchShops (value) {
-        if(!value.length) { // 没有数据
-          this.noSearchShops = true
-        } else {// 有数据
-          this.noSearchShops = false
-        }
-      }
-    },
-
-    components: {
-      HeaderTop
+  data () {
+    return {
+      keyword: '',
+      imgBaseUrl: 'http://cangdu.org:8001/img/',
+      noSearchShops: false
     }
+  },
+
+  computed: {
+    ...mapState(['searchShops'])
+  },
+
+  methods: {
+    search () {
+      // 得到搜索关键字
+      const keyword = this.keyword.trim()
+      // 进行搜索
+      if (keyword) {
+        this.$store.dispatch('searchShops', keyword)
+      }
+    }
+  },
+
+  watch: {
+    searchShops (value) {
+      if (!value.length) { // 没有数据
+        this.noSearchShops = true
+      } else { // 有数据
+        this.noSearchShops = false
+      }
+    }
+  },
+
+  components: {
+    HeaderTop
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus" scoped>

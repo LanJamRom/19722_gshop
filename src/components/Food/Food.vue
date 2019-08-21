@@ -30,26 +30,26 @@
 </template>
 
 <script>
-  import CartControl from '../CartControl/CartControl'
-  export default {
-    props: {
-      food: Object
-    },
-    data() {
-      return {
-        isshow: false
-      }
-    },
-
-    methods: {
-      toggleShow() {
-        this.isshow = !this.isshow
-      }
-    },
-    components: {
-      CartControl
+import CartControl from '../CartControl/CartControl'
+export default {
+  props: {
+    food: Object
+  },
+  data () {
+    return {
+      isshow: false
     }
+  },
+
+  methods: {
+    toggleShow () {
+      this.isshow = !this.isshow
+    }
+  },
+  components: {
+    CartControl
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">

@@ -6,22 +6,22 @@
 </template>
 
 <script>
-  import FooterGuide from './components/FooterGuide/FooterGuide'
-  import {mapActions} from 'vuex'
-  export default {
+import FooterGuide from './components/FooterGuide/FooterGuide'
+import {mapActions} from 'vuex'
+export default {
 
-    mounted() {
-      //this.$store.dispatch('getAddress')
-      this.getAddress()
-      this.getUserInfo()
-    },
-    components: {
-      FooterGuide
-    },
-    methods: {
-      ...mapActions(['getAddress','getUserInfo'])
-    }
+  mounted () {
+    // this.$store.dispatch('getAddress')
+    this.getAddress()
+    this.getUserInfo()
+  },
+  components: {
+    FooterGuide
+  },
+  methods: {
+    ...mapActions(['getAddress', 'getUserInfo'])
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">
@@ -30,4 +30,3 @@
     height 100%
     background #f5f5f5
 </style>
-

@@ -19,15 +19,15 @@
 </template>
 
 <script>
-  import ShopHeader from '../../components/ShopHeader/ShopHeader'
-  export default {
-    mounted() {
-      this.$store.dispatch('getShopInfo')
-    },
-    components: {
-      ShopHeader
-    }
+import ShopHeader from '../../components/ShopHeader/ShopHeader'
+export default {
+  mounted () {
+    this.$store.dispatch('getShopInfo')
+  },
+  components: {
+    ShopHeader
   }
+}
 </script>
 
 <style lang="stylus" type="text/stylus" rel="stylesheet/stylus">
